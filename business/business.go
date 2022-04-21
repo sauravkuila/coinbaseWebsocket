@@ -10,10 +10,7 @@ func Init(keys []string, queueSize int) {
 	if len(keys) > 0 {
 		for _, key := range keys {
 			var vwap models.VwapPackage
-			vwap.Size = queueSize
-			vwap.Start = 0
-			vwap.End = 0
-			vwap.Queue = make([]models.CustomChannelResp, 0)
+			vwap.Initialize(queueSize)
 			productResponseMap[key] = vwap
 		}
 	}

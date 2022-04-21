@@ -10,3 +10,10 @@ type VwapPackage struct {
 	VolumeSum      float64
 	PriceVolumeSum float64
 }
+
+func (obj *VwapPackage) Initialize(size int) {
+	obj.Size = size
+	obj.Start = 0
+	obj.End = 0
+	obj.Queue = make([]CustomChannelResp, 0)
+}

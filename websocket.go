@@ -68,7 +68,7 @@ func writeMessage(matchRequest models.ChannelRequest) error {
 	return nil
 }
 
-func CloseConnection() {
+func closeConnection() {
 	err := websocketConn.WriteMessage(websocket.CloseMessage, websocket.FormatCloseMessage(websocket.CloseNormalClosure, ""))
 	if err != nil {
 		log.Println("websocket close error:", err)

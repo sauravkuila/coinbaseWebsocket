@@ -16,18 +16,16 @@ func main() {
 		return
 	}
 
-	initPairs := make([]string, 3)
-	initPairs[0] = "ETH-EUR"
-	initPairs[1] = "ETH-USD"
-	initPairs[2] = "ETH-BTC"
+	initPairs := make([]string, 0)
+	initPairs = append(initPairs, "ETH-EUR")
+	initPairs = append(initPairs, "ETH-USD")
+	initPairs = append(initPairs, "ETH-BTC")
 	business.Init(initPairs, 5)
 
 	var channel models.Channel
 	channel.Name = "matches"
 	channel.ProductIds = make([]string, 0)
-	// channel.ProductIds = append(channel.ProductIds, "ETH-EUR")
-	channel.ProductIds = append(channel.ProductIds, "ETH-USD")
-	// channel.ProductIds = append(channel.ProductIds, "ETH-BTC")
+	channel.ProductIds = append(channel.ProductIds, initPairs...)
 
 	var subscribe models.ChannelRequest
 	subscribe.Type = "subscribe"
@@ -39,13 +37,12 @@ func main() {
 }
 
 func addShutdownHook() {
-	// when receive interruption from system shutdown server and scheduler
 	quit := make(chan os.Signal, 1)
 
 	signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM, os.Interrupt)
 	<-quit
 
 	log.Println("Interrupt called. Closing Socket Connection")
-	CloseConnection()
+	closeConnection()
 	log.Println("Quiting application")
 }

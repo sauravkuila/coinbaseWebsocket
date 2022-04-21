@@ -21,7 +21,6 @@ func CalculateVWAP(tick models.ChannelResponse) {
 		} else {
 			vwapStruct.Queue = append(vwapStruct.Queue, customTick)
 			vwapStruct.End += 1
-			// log.Printf("ProductID: %s | Price: %v | Size: %v | Date: %s", customTick.ProductID, customTick.Price, customTick.Size, customTick.Time.GoString())
 		}
 		printVWAP(&vwapStruct)
 		productResponseMap[tick.ProductID] = vwapStruct
