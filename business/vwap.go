@@ -5,7 +5,7 @@ import (
 	"zerohash/models"
 )
 
-func CalculateVWAP(tick models.ChannelResponse) {
+func CalculateVWAP(tick models.ChannelResponse) float64 {
 	if tick.Type == "match" {
 		vwapStruct := productResponseMap[tick.ProductID]
 		customTick := tick.Convert()
@@ -22,13 +22,17 @@ func CalculateVWAP(tick models.ChannelResponse) {
 			vwapStruct.Queue = append(vwapStruct.Queue, customTick)
 			vwapStruct.End += 1
 		}
-		printVWAP(&vwapStruct)
+		vwap := printVWAP(&vwapStruct)
 		productResponseMap[tick.ProductID] = vwapStruct
+		return vwap
 	}
+	return -1
 }
 
-func printVWAP(data *models.VwapPackage) {
+func printVWAP(data *models.VwapPackage) float64 {
 	data.PriceVolumeSum = data.PriceVolumeSum + data.NewTick.Price*data.NewTick.Size - data.OldTick.Price*data.OldTick.Size
 	data.VolumeSum = data.VolumeSum + data.NewTick.Size - data.OldTick.Size
-	log.Printf("%s VMAC %s = %v", data.NewTick.Time.Format("2006-01-02 15:04:05"), data.NewTick.ProductID, data.PriceVolumeSum/data.VolumeSum)
+	actualVWAP := data.PriceVolumeSum / data.VolumeSum
+	log.Printf("%s VMAC %s = %v", data.NewTick.Time.Format("2006-01-02 15:04:05"), data.NewTick.ProductID, actualVWAP)
+	return actualVWAP
 }

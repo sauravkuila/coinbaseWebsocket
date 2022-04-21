@@ -46,3 +46,8 @@ func addShutdownHook() {
 	closeConnection()
 	log.Println("Quiting application")
 }
+
+//sources
+//https://docs.cloud.coinbase.com/exchange/docs/websocket-channels#heartbeat-channel
+//https://docs.cloud.coinbase.com/exchange/reference/exchangerestapi_getaccounts
+//https://docs.cloud.coinbase.com/prime/docs/websocket-feed#subscribe
