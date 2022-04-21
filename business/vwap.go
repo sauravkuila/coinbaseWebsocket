@@ -33,6 +33,6 @@ func printVWAP(data *models.VwapPackage) float64 {
 	data.PriceVolumeSum = data.PriceVolumeSum + data.NewTick.Price*data.NewTick.Size - data.OldTick.Price*data.OldTick.Size
 	data.VolumeSum = data.VolumeSum + data.NewTick.Size - data.OldTick.Size
 	actualVWAP := data.PriceVolumeSum / data.VolumeSum
-	log.Printf("%s VMAC %s = %v", data.NewTick.Time.Format("2006-01-02 15:04:05"), data.NewTick.ProductID, actualVWAP)
+	log.Printf("%s VWAP %s = %v", data.NewTick.Time.Format("2006-01-02 15:04:05"), data.NewTick.ProductID, actualVWAP)
 	return actualVWAP
 }

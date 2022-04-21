@@ -20,7 +20,7 @@ func main() {
 	initPairs = append(initPairs, "ETH-EUR")
 	initPairs = append(initPairs, "ETH-USD")
 	initPairs = append(initPairs, "ETH-BTC")
-	business.Init(initPairs, 5)
+	business.Init(initPairs, 200)
 
 	var channel models.Channel
 	channel.Name = "matches"
