@@ -21,7 +21,7 @@ func initWebSocket(conn string) error {
 
 	sockConn, _, err := websocket.DefaultDialer.Dial(connUrl.String(), nil)
 	if err != nil {
-		log.Fatal("dial:", err)
+		log.Fatal("websocket dial error:", err)
 		return err
 	}
 	websocketConn = sockConn
@@ -39,7 +39,7 @@ func readMessage(done chan struct{}) {
 		if websocketConn != nil {
 			_, message, err := websocketConn.ReadMessage()
 			if err != nil {
-				log.Println("read:", err)
+				log.Println("websocket read error:", err)
 				return
 			}
 			// log.Printf("recv: %s", message)
@@ -62,7 +62,7 @@ func writeMessage(matchRequest models.ChannelRequest) error {
 	}
 	err = websocketConn.WriteMessage(websocket.TextMessage, request)
 	if err != nil {
-		log.Println("write:", err)
+		log.Println("websocket write error:", err)
 		return err
 	}
 	return nil
@@ -71,14 +71,7 @@ func writeMessage(matchRequest models.ChannelRequest) error {
 func CloseConnection() {
 	err := websocketConn.WriteMessage(websocket.CloseMessage, websocket.FormatCloseMessage(websocket.CloseNormalClosure, ""))
 	if err != nil {
-		log.Println("write close:", err)
+		log.Println("websocket close error:", err)
 		return
 	}
-	// select {
-	// case <-done:
-	// case <-time.After(time.Second):
-	// }
-	// if websocketConn != nil {
-	// 	websocketConn.Close()
-	// }
 }

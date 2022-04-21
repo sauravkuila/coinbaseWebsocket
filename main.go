@@ -4,17 +4,13 @@ import (
 	"log"
 	"os"
 	"os/signal"
+	"syscall"
 
 	"zerohash/business"
 	"zerohash/models"
 )
 
 func main() {
-	log.SetFlags(0)
-
-	interrupt := make(chan os.Signal, 1)
-	signal.Notify(interrupt, os.Interrupt)
-
 	initErr := initWebSocket("ws-feed.exchange.coinbase.com")
 	if initErr != nil {
 		return
@@ -39,15 +35,17 @@ func main() {
 	subscribe.Channels = append(subscribe.Channels, channel)
 
 	writeMessage(subscribe)
+	addShutdownHook()
+}
 
-	for {
-		select {
-		// case <-done:
-		// 	return
-		case <-interrupt:
-			log.Println("interrupt")
-			CloseConnection()
-			return
-		}
-	}
+func addShutdownHook() {
+	// when receive interruption from system shutdown server and scheduler
+	quit := make(chan os.Signal, 1)
+
+	signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM, os.Interrupt)
+	<-quit
+
+	log.Println("Interrupt called. Closing Socket Connection")
+	CloseConnection()
+	log.Println("Quiting application")
 }

@@ -1,7 +1,6 @@
 package business
 
 import (
-	"fmt"
 	"log"
 	"zerohash/models"
 )
@@ -11,7 +10,6 @@ func CalculateVWAP(tick models.ChannelResponse) {
 		vwapStruct := productResponseMap[tick.ProductID]
 		customTick := tick.Convert()
 		vwapStruct.NewTick = customTick
-		fmt.Println(vwapStruct.Queue)
 
 		if vwapStruct.End == vwapStruct.Size {
 			vwapStruct.OldTick = vwapStruct.Queue[vwapStruct.Start]
